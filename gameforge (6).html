@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameForge — Pakistan's Premier Gaming Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-void: #030308;
+  --bg-dark: #080810;
+  --bg-card: #0d0d1a;
+  --bg-card2: #10101f;
+  --neon-purple: #b820ff;
+  --neon-blue: #00c8ff;
+  --neon-pink: #ff2d78;
+  --neon-green: #00ff88;
+  --text-primary: #f0f0ff;
+  --text-muted: #7070a0;
+  --text-dim: #4040608;
+  --border-glow: rgba(184,32,255,0.3);
+  --border-blue: rgba(0,200,255,0.3);
+  --gold: #ffd700;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 3px; }
+
+/* ─── NAVBAR ─────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(16px, 4vw, 48px);
+  height: 70px;
+  background: rgba(3,3,8,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glow);
+}
+
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(18px, 3vw, 26px);
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+
+.nav-center {
+  display: flex; align-items: center; gap: 12px;
+  flex: 1; max-width: 500px; margin: 0 24px;
+}
+
+.search-wrap {
+  position: relative; flex: 1;
+}
+
+.search-wrap input {
+  width: 100%; padding: 10px 40px 10px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-glow);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.search-wrap input:focus { border-color: var(--neon-purple); }
+.search-wrap input::placeholder { color: var(--text-muted); }
+
+.search-icon {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-size: 14px; pointer-events: none;
+}
+
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+
+.btn-cart {
+  position: relative;
+  background: linear-gradient(135deg, var(--neon-purple), #6600cc);
+  border: none; border-radius: 8px;
+  padding: 9px 20px;
+  color: #fff; font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1px; cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.btn-cart:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(184,32,255,0.6); }
+
+.cart-badge {
+  position: absolute; top: -8px; right: -8px;
+  background: var(--neon-pink); color: #fff;
+  width: 20px; height: 20px; border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* ─── HERO ────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 24px 60px;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(184,32,255,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 70%, rgba(0,200,255,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,45,120,0.08) 0%, transparent 50%);
+}
+
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(184,32,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,32,255,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove { from { transform: translateY(0); } to { transform: translateY(60px); } }
+
+.hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(184,32,255,0.15);
+  border: 1px solid var(--border-glow);
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--neon-purple);
+  letter-spacing: 3px;
+  margin-bottom: 24px;
+  animation: fadeInDown 0.8s ease;
+}
+
+.hero h1 {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(42px, 10vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -2px;
+  margin-bottom: 8px;
+  animation: fadeInDown 0.9s ease;
+}
+
+.hero h1 .line1 {
+  display: block;
+  background: linear-gradient(135deg, #ffffff 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero h1 .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 0.45em;
+  letter-spacing: 8px;
+  margin-top: 8px;
+}
+
+.hero-tagline {
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: var(--text-muted);
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin: 24px 0 40px;
+  animation: fadeInUp 1s ease;
+}
+
+.hero-tagline span { color: var(--neon-blue); font-weight: 600; }
+
+.hero-ctas {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  animation: fadeInUp 1.1s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  border: none; border-radius: 10px;
+  padding: 16px 36px;
+  color: #fff; font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 2px; cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none; display: inline-block;
+  box-shadow: 0 0 30px rgba(184,32,255,0.3);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(184,32,255,0.6); }
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  padding: 16px 36px;
+  color: var(--text-primary); font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 2px; cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none; display: inline-block;
+}
+.btn-secondary:hover { border-color: var(--neon-purple); color: var(--neon-purple); transform: translateY(-3px); }
+
+.hero-stats {
+  display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+  margin-top: 60px;
+  animation: fadeInUp 1.2s ease;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 2px; margin-top: 4px; }
+
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+
+/* ─── SECTION COMMON ─────────────────────────────── */
+section { padding: clamp(40px, 6vw, 80px) clamp(16px, 4vw, 60px); }
+
+.section-header {
+  text-align: center; margin-bottom: 48px;
+}
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff, var(--neon-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.section-sub {
+  color: var(--text-muted);
+  font-size: 15px; letter-spacing: 1px;
+}
+.neon-line {
+  width: 80px; height: 3px;
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+  margin: 16px auto 0;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(184,32,255,0.5);
+}
+
+/* ─── FILTER BAR ─────────────────────────────────── */
+.filter-section {
+  padding: 0 clamp(16px, 4vw, 60px) 24px;
+  position: sticky; top: 70px; z-index: 100;
+  background: rgba(3,3,8,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(184,32,255,0.1);
+}
+
+.filter-inner {
+  padding: 16px 0;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+
+.filter-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--text-muted);
+  letter-spacing: 2px; margin-right: 4px;
+}
+
+.filter-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 7px 16px;
+  color: var(--text-muted);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--neon-purple); color: var(--neon-purple); }
+.filter-btn.active {
+  background: linear-gradient(135deg, rgba(184,32,255,0.2), rgba(0,200,255,0.1));
+  border-color: var(--neon-purple);
+  color: var(--neon-purple);
+  box-shadow: 0 0 12px rgba(184,32,255,0.2);
+}
+
+.platform-toggle { display: flex; gap: 8px; margin-left: auto; }
+.platform-btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; font-weight: 700;
+  cursor: pointer; transition: all 0.25s;
+}
+.platform-btn[data-plat="PS"].active { border-color: #003087; color: #0070ff; background: rgba(0,112,255,0.1); }
+.platform-btn[data-plat="XBOX"].active { border-color: #107c10; color: #52b043; background: rgba(82,176,67,0.1); }
+.platform-btn.active { box-shadow: 0 0 12px rgba(0,200,255,0.2); }
+
+/* ─── GAMES GRID ─────────────────────────────────── */
+.games-section { padding-top: 40px; }
+
+.results-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.results-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px; color: var(--text-muted);
+}
+.results-count span { color: var(--neon-purple); font-weight: 700; }
+
+.sort-select {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-glow);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px; cursor: pointer; outline: none;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* GAME CARD */
+.game-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  cursor: pointer;
+  animation: cardIn 0.4s ease both;
+}
+@keyframes cardIn { from { opacity:0; transform:scale(0.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+
+.game-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--border-glow);
+  box-shadow: 0 12px 40px rgba(184,32,255,0.2), 0 0 0 1px rgba(184,32,255,0.1);
+}
+.game-card.hidden { display: none; }
+
+.card-img {
+  position: relative;
+  width: 100%; aspect-ratio: 3/4;
+  overflow: hidden; background: #0a0a16;
+}
+.card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.game-card:hover .card-img img { transform: scale(1.06); }
+
+.card-platform {
+  position: absolute; top: 10px; left: 10px;
+  padding: 3px 10px; border-radius: 4px;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+}
+.platform-ps { background: #003087; color: #fff; }
+.platform-xbox { background: #107c10; color: #fff; }
+.platform-both { background: linear-gradient(90deg,#003087,#107c10); color:#fff; }
+.platform-pc { background: #333; color: #fff; }
+
+.card-genre {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+  border: 1px solid rgba(184,32,255,0.3);
+  padding: 3px 10px; border-radius: 4px;
+  font-size: 10px; color: var(--neon-purple); letter-spacing: 1px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%);
+}
+
+.card-body { padding: 14px; }
+
+.card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-desc {
+  font-size: 11px; color: var(--text-muted);
+  line-height: 1.5; margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+
+.card-price {
+  font-family: 'Orbitron', monospace;
+  font-size: 15px; font-weight: 900;
+  color: var(--neon-green);
+}
+.card-price small {
+  font-size: 9px; color: var(--text-muted);
+  font-family: 'Rajdhani', sans-serif;
+  display: block; margin-bottom: 2px;
+}
+
+.btn-add {
+  background: linear-gradient(135deg, var(--neon-purple), #6600cc);
+  border: none; border-radius: 7px;
+  padding: 8px 14px;
+  color: #fff; font-family: 'Orbitron', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  cursor: pointer; transition: all 0.3s; white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-add:hover { box-shadow: 0 0 16px rgba(184,32,255,0.5); transform: scale(1.05); }
+.btn-add.added {
+  background: linear-gradient(135deg, var(--neon-green), #00a855);
+  color: #000;
+}
+
+/* ─── CONTROLLERS SECTION ─────────────────────────── */
+.controllers-section { background: var(--bg-dark); }
+
+.controllers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.controller-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; overflow: hidden;
+  transition: all 0.35s;
+}
+.controller-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-blue);
+  box-shadow: 0 12px 40px rgba(0,200,255,0.15);
+}
+.controller-img {
+  width: 100%; aspect-ratio: 4/3;
+  object-fit: cover; background: #0a0a16;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 80px;
+}
+.controller-body { padding: 16px; }
+.controller-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  margin-bottom: 6px;
+}
+.controller-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+.controller-footer { display: flex; align-items: center; justify-content: space-between; }
+.controller-price { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--neon-blue); font-weight: 900; }
+
+/* ─── CART SIDEBAR ─────────────────────────────────── */
+.cart-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+
+.cart-sidebar {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(420px, 100vw);
+  background: var(--bg-card);
+  border-left: 1px solid var(--border-glow);
+  z-index: 2001;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: column;
+  box-shadow: -20px 0 60px rgba(184,32,255,0.1);
+}
+.cart-sidebar.open { transform: translateX(0); }
+
+.cart-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.cart-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; font-weight: 900;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.cart-close {
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; width: 36px; height: 36px;
+  color: var(--text-primary); font-size: 18px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.cart-close:hover { background: rgba(255,45,120,0.2); border-color: var(--neon-pink); color: var(--neon-pink); }
+
+.cart-items { flex: 1; overflow-y: auto; padding: 16px; }
+
+.cart-empty {
+  text-align: center; padding: 60px 20px;
+  color: var(--text-muted);
+}
+.cart-empty .empty-icon { font-size: 64px; margin-bottom: 16px; }
+.cart-empty p { font-family: 'Orbitron', monospace; font-size: 14px; }
+
+.cart-item {
+  display: flex; gap: 12px; align-items: center;
+  padding: 12px; border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 10px;
+  animation: slideIn 0.3s ease;
+}
+@keyframes slideIn { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+
+.cart-item-img {
+  width: 56px; height: 56px; border-radius: 8px;
+  object-fit: cover; flex-shrink: 0;
+  background: var(--bg-dark);
+}
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-title { font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-platform { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.cart-item-price { font-family: 'Orbitron', monospace; font-size: 13px; color: var(--neon-green); font-weight: 700; }
+
+.cart-item-remove {
+  background: rgba(255,45,120,0.1); border: 1px solid rgba(255,45,120,0.2);
+  border-radius: 6px; width: 28px; height: 28px;
+  color: var(--neon-pink); font-size: 14px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.cart-item-remove:hover { background: rgba(255,45,120,0.3); }
+
+.cart-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.cart-total {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.cart-total-label {
+  font-family: 'Orbitron', monospace; font-size: 14px; color: var(--text-muted);
+}
+.cart-total-amount {
+  font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900;
+  color: var(--neon-green);
+}
+
+.cart-payment-choice {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+.payment-opt {
+  flex: 1; padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: var(--text-muted); font-size: 12px;
+  text-align: center; cursor: pointer; transition: all 0.2s;
+  font-family: 'Rajdhani', sans-serif; font-weight: 600;
+}
+.payment-opt.selected { border-color: var(--neon-purple); color: var(--neon-purple); background: rgba(184,32,255,0.1); }
+
+.btn-whatsapp {
+  width: 100%;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  border: none; border-radius: 10px;
+  padding: 16px;
+  color: #fff; font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 1px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: all 0.3s;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+.btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+
+.btn-email-order {
+  width: 100%;
+  background: linear-gradient(135deg, var(--neon-blue), #0044aa);
+  border: none; border-radius: 10px;
+  padding: 14px;
+  color: #fff; font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all 0.3s;
+}
+.btn-email-order:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,200,255,0.3); }
+
+/* ─── ORDER MODAL ────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: 36px;
+  width: 100%; max-width: 500px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 0 60px rgba(184,32,255,0.2);
+  transform: scale(0.9);
+  transition: transform 0.3s;
+}
+.modal-overlay.open .modal { transform: scale(1); }
+
+.modal-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px; font-weight: 900;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+}
+
+.form-group { margin-bottom: 18px; }
+.form-label {
+  display: block; font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--text-muted); letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.form-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif; font-size: 15px;
+  outline: none; transition: border-color 0.3s;
+}
+.form-input:focus { border-color: var(--neon-purple); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.payment-cards {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;
+}
+.payment-card {
+  padding: 14px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.payment-card.selected { border-color: var(--neon-purple); background: rgba(184,32,255,0.1); }
+.payment-card-icon { font-size: 24px; margin-bottom: 6px; }
+.payment-card-name { font-family: 'Orbitron', monospace; font-size: 10px; color: var(--text-primary); }
+.payment-card-desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 24px; }
+.btn-modal-submit {
+  flex: 1;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  border: none; border-radius: 10px; padding: 14px;
+  color: #fff; font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px; cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-modal-submit:hover { box-shadow: 0 0 30px rgba(184,32,255,0.5); transform: translateY(-2px); }
+.btn-modal-cancel {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 14px 20px;
+  color: var(--text-muted); font-family: 'Orbitron', monospace;
+  font-size: 12px; cursor: pointer;
+}
+
+/* ─── SUCCESS TOAST ────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: linear-gradient(135deg, #1a1a2e, var(--bg-card));
+  border: 1px solid var(--neon-green);
+  border-radius: 12px; padding: 16px 28px;
+  color: var(--neon-green); font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  z-index: 9999; text-align: center;
+  box-shadow: 0 0 30px rgba(0,255,136,0.3);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ─── FOOTER ──────────────────────────────────────── */
+footer {
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-glow);
+  padding: clamp(40px,6vw,80px) clamp(16px,4vw,60px) 30px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px; margin-bottom: 40px;
+}
+
+.footer-brand .nav-logo { font-size: 28px; display: inline-block; margin-bottom: 12px; }
+.footer-brand p { color: var(--text-muted); font-size: 14px; line-height: 1.7; max-width: 260px; }
+
+.footer-col h4 {
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  color: var(--neon-purple); margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 8px; }
+.footer-col ul li a {
+  color: var(--text-muted); text-decoration: none;
+  font-size: 14px; transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--neon-blue); }
+
+.footer-contact { color: var(--text-muted); font-size: 14px; line-height: 2; }
+.footer-contact a { color: var(--neon-blue); text-decoration: none; }
+
+.social-links { display: flex; gap: 12px; margin-top: 16px; }
+.social-link {
+  width: 38px; height: 38px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); text-decoration: none; font-size: 16px;
+  transition: all 0.2s;
+}
+.social-link:hover { border-color: var(--neon-purple); color: var(--neon-purple); transform: translateY(-2px); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 24px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 12px; color: var(--text-muted); font-family: 'Share Tech Mono', monospace; }
+.footer-copy span { color: var(--neon-purple); }
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-center { display: none; }
+  .mobile-search-bar {
+    display: block; padding: 12px clamp(16px,4vw,60px);
+    background: rgba(3,3,8,0.98); border-bottom: 1px solid rgba(184,32,255,0.1);
+    position: sticky; top: 70px; z-index: 99;
+  }
+  .mobile-search-bar input {
+    width: 100%; padding: 11px 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-glow); border-radius: 8px;
+    color: var(--text-primary); font-family: 'Share Tech Mono', monospace;
+    font-size: 13px; outline: none;
+  }
+  .filter-section { top: 130px; }
+  .games-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .form-row { grid-template-columns: 1fr; }
+  .payment-cards { grid-template-columns: 1fr 1fr; }
+  .platform-toggle { margin-left: 0; }
+  .filter-inner { padding: 10px 0; }
+}
+@media (min-width: 769px) {
+  .mobile-search-bar { display: none; }
+}
+
+/* No results */
+.no-results {
+  grid-column: 1/-1; text-align: center; padding: 80px 20px;
+  color: var(--text-muted);
+}
+.no-results .no-icon { font-size: 64px; margin-bottom: 16px; }
+.no-results p { font-family: 'Orbitron', monospace; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">⚡ GAMEFORGE</a>
+  <div class="nav-center">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search games...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-cart" onclick="toggleCart()">
+      🛒 CART
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE SEARCH -->
+<div class="mobile-search-bar">
+  <input type="text" id="mobileSearch" placeholder="Search 200+ games...">
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🎮 PAKISTAN'S #1 GAMING STORE</div>
+    <h1>
+      <span class="line1">GAMEFORGE</span>
+      <span class="line2">POWER UP YOUR GAME</span>
+    </h1>
+    <p class="hero-tagline">200+ premium titles for <span>PlayStation & Xbox</span> — delivered to your door</p>
+    <div class="hero-ctas">
+      <a href="#games" class="btn-primary">🎮 BROWSE GAMES</a>
+      <a href="#controllers" class="btn-secondary">🕹️ CONTROLLERS</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">200+</div><div class="stat-label">GAMES</div></div>
+      <div class="stat"><div class="stat-num">30+</div><div class="stat-label">CONTROLLERS</div></div>
+      <div class="stat"><div class="stat-num">24H</div><div class="stat-label">DELIVERY</div></div>
+      <div class="stat"><div class="stat-num">COD</div><div class="stat-label">AVAILABLE</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-section" id="filterBar">
+  <div class="filter-inner">
+    <span class="filter-label">GENRE:</span>
+    <button class="filter-btn active" data-genre="all">ALL</button>
+    <button class="filter-btn" data-genre="Action">ACTION</button>
+    <button class="filter-btn" data-genre="RPG">RPG</button>
+    <button class="filter-btn" data-genre="Sports">SPORTS</button>
+    <button class="filter-btn" data-genre="Horror">HORROR</button>
+    <button class="filter-btn" data-genre="Racing">RACING</button>
+    <button class="filter-btn" data-genre="Adventure">ADVENTURE</button>
+    <button class="filter-btn" data-genre="Shooter">SHOOTER</button>
+    <button class="filter-btn" data-genre="Fighting">FIGHTING</button>
+    <button class="filter-btn" data-genre="Strategy">STRATEGY</button>
+    <button class="filter-btn" data-genre="Simulation">SIMULATION</button>
+    <div class="platform-toggle">
+      <button class="platform-btn" data-plat="PS">PS</button>
+      <button class="platform-btn" data-plat="XBOX">XBOX</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAMES SECTION -->
+<section class="games-section" id="games">
+  <div class="section-header">
+    <div class="section-title">GAME LIBRARY</div>
+    <div class="section-sub">200+ titles — PlayStation & Xbox</div>
+    <div class="neon-line"></div>
+  </div>
+  <div class="results-bar">
+    <div class="results-count">Showing <span id="gameCount">0</span> games</div>
+    <select class="sort-select" id="sortSelect">
+      <option value="default">Sort: Featured</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="name">Name: A-Z</option>
+    </select>
+  </div>
+  <div class="games-grid" id="gamesGrid"></div>
+</section>
+
+<!-- CONTROLLERS SECTION -->
+<section class="controllers-section" id="controllers">
+  <div class="section-header">
+    <div class="section-title">CONTROLLERS</div>
+    <div class="section-sub">Official PS & Xbox Controllers</div>
+    <div class="neon-line"></div>
+  </div>
+  <div class="controllers-grid" id="controllersGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="nav-logo">⚡ GAMEFORGE</a>
+      <p>Pakistan's premier teen-run gaming store. We bring the best PS & Xbox titles straight to your door with Cash on Delivery.</p>
+      <div class="social-links">
+        <a href="https://wa.me/923343996536" class="social-link" target="_blank">💬</a>
+        <a href="#" class="social-link">📘</a>
+        <a href="#" class="social-link">📸</a>
+        <a href="#" class="social-link">🎮</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>QUICK LINKS</h4>
+      <ul>
+        <li><a href="#games">All Games</a></li>
+        <li><a href="#controllers">Controllers</a></li>
+        <li><a href="#" onclick="toggleCart()">My Cart</a></li>
+        <li><a href="https://wa.me/923343996536" target="_blank">Order on WhatsApp</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>PLATFORMS</h4>
+      <ul>
+        <li><a href="#">PlayStation 5</a></li>
+        <li><a href="#">PlayStation 4</a></li>
+        <li><a href="#">Xbox Series X</a></li>
+        <li><a href="#">Xbox One</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>CONTACT US</h4>
+      <div class="footer-contact">
+        📞 <a href="tel:03343996536">0334-3996536</a><br>
+        💬 <a href="https://wa.me/923343996536" target="_blank">WhatsApp Us</a><br>
+        📧 <a href="mailto:saifkhan1906@gmail.com">saifkhan1906@gmail.com</a><br>
+        📍 Karachi, Pakistan<br>
+        🕐 Mon–Sat 10AM–10PM
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 <span>GAMEFORGE</span> — All rights reserved</div>
+    <div class="footer-copy">Built with ❤️ in Pakistan 🇵🇰</div>
+  </div>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <div class="cart-title">🛒 YOUR CART</div>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="empty-icon">🎮</div>
+      <p>YOUR CART IS EMPTY</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span class="cart-total-label">TOTAL</span>
+      <span class="cart-total-amount">PKR <span id="cartTotal">0</span></span>
+    </div>
+    <div class="cart-payment-choice">
+      <div class="payment-opt selected" onclick="selectPayment('cod',this)">💵 Cash on Delivery</div>
+      <div class="payment-opt" onclick="selectPayment('online',this)">💳 Online Payment</div>
+    </div>
+    <button class="btn-whatsapp" onclick="whatsappCheckout()">
+      <span>💬</span> ORDER ON WHATSAPP
+    </button>
+    <button class="btn-email-order" onclick="openOrderModal()">
+      <span>📧</span> PLACE ORDER & GET CONFIRMATION
+    </button>
+  </div>
+</div>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <div class="modal-title">📦 PLACE YOUR ORDER</div>
+    <div class="form-group">
+      <label class="form-label">FULL NAME</label>
+      <input class="form-input" id="orderName" placeholder="Your full name" type="text">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">PHONE</label>
+        <input class="form-input" id="orderPhone" placeholder="03XX-XXXXXXX" type="tel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">EMAIL</label>
+        <input class="form-input" id="orderEmail" placeholder="your@email.com" type="email">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">DELIVERY ADDRESS</label>
+      <input class="form-input" id="orderAddress" placeholder="Full address with city" type="text">
+    </div>
+    <div class="form-group">
+      <label class="form-label">PAYMENT METHOD</label>
+      <div class="payment-cards">
+        <div class="payment-card selected" onclick="selectModalPayment('cod',this)">
+          <div class="payment-card-icon">💵</div>
+          <div class="payment-card-name">CASH ON DELIVERY</div>
+          <div class="payment-card-desc">Pay when you receive</div>
+        </div>
+        <div class="payment-card" onclick="selectModalPayment('easypaisa',this)">
+          <div class="payment-card-icon">📱</div>
+          <div class="payment-card-name">EASYPAISA</div>
+          <div class="payment-card-desc">03343996536</div>
+        </div>
+        <div class="payment-card" onclick="selectModalPayment('jazzcash',this)">
+          <div class="payment-card-icon">💸</div>
+          <div class="payment-card-name">JAZZCASH</div>
+          <div class="payment-card-desc">03343996536</div>
+        </div>
+        <div class="payment-card" onclick="selectModalPayment('bank',this)">
+          <div class="payment-card-icon">🏦</div>
+          <div class="payment-card-name">BANK TRANSFER</div>
+          <div class="payment-card-desc">HBL / Meezan</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">SPECIAL NOTES</label>
+      <input class="form-input" id="orderNotes" placeholder="Any special instructions..." type="text">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeOrderModal()">CANCEL</button>
+      <button class="btn-modal-submit" onclick="submitOrder()">🚀 CONFIRM ORDER</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ ORDER PLACED SUCCESSFULLY!</div>
+
+<script>
+// ──────────────────────────────────────────────────
+// GAME DATA — 200+ titles
+// ──────────────────────────────────────────────────
+const GAMES = [
+// === ACTION ===
+{id:1,title:"God of War Ragnarök",genre:"Action",platform:"PS",price:8999,desc:"Kratos and Atreus journey across the Nine Realms in an epic Norse saga.",img:"https://placehold.co/300x400/1a0030/b820ff?text=God+of+War"},
+{id:2,title:"Spider-Man 2",genre:"Action",platform:"PS",price:9499,desc:"Peter Parker and Miles Morales face the fearsome Venom symbiote.",img:"https://placehold.co/300x400/0a001a/00c8ff?text=Spider-Man+2"},
+{id:3,title:"Batman: Arkham Knight",genre:"Action",platform:"BOTH",price:3999,desc:"The Dark Knight faces his greatest challenge in Gotham's final night.",img:"https://placehold.co/300x400/000d1a/0088ff?text=Batman+Arkham"},
+{id:4,title:"Sekiro: Shadows Die Twice",genre:"Action",platform:"BOTH",price:6499,desc:"A shinobi seeks revenge in a brutal reimagining of feudal Japan.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Sekiro"},
+{id:5,title:"Ghost of Tsushima",genre:"Action",platform:"PS",price:7499,desc:"A samurai defends Tsushima Island from Mongol invasion.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Ghost+Tsushima"},
+{id:6,title:"Devil May Cry 5",genre:"Action",platform:"BOTH",price:4999,desc:"Dante, Nero and a mysterious new hunter battle demonic hordes.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=DMC+5"},
+{id:7,title:"Returnal",genre:"Action",platform:"PS",price:7999,desc:"Selene crashes on an alien world, trapped in a deadly time loop.",img:"https://placehold.co/300x400/00001a/b820ff?text=Returnal"},
+{id:8,title:"Nioh 2",genre:"Action",platform:"PS",price:5499,desc:"A half-human warrior battles yokai in feudal Japan.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Nioh+2"},
+{id:9,title:"Prince of Persia: The Lost Crown",genre:"Action",platform:"BOTH",price:5999,desc:"A young warrior ventures into Mount Qaf in a mythic adventure.",img:"https://placehold.co/300x400/1a0a00/ffd700?text=Prince+Persia"},
+{id:10,title:"Stellar Blade",genre:"Action",platform:"PS",price:8499,desc:"Eve descends to a ruined Earth to reclaim it from monstrous threats.",img:"https://placehold.co/300x400/0d0020/b820ff?text=Stellar+Blade"},
+{id:11,title:"Bayonetta 3",genre:"Action",platform:"BOTH",price:5999,desc:"The Umbra Witch battles multiverse-scale chaos with signature style.",img:"https://placehold.co/300x400/1a001a/ff2d78?text=Bayonetta+3"},
+{id:12,title:"Ghostrunner 2",genre:"Action",platform:"BOTH",price:6499,desc:"A cyberpunk sword-slinging runner through neon-drenched towers.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Ghostrunner+2"},
+{id:13,title:"Wanted: Dead",genre:"Action",platform:"BOTH",price:4499,desc:"A cyberpunk neo-noir action adventure with brutal combat.",img:"https://placehold.co/300x400/0d0d0d/ff2d78?text=Wanted+Dead"},
+{id:14,title:"Wo Long: Fallen Dynasty",genre:"Action",platform:"BOTH",price:6999,desc:"A dark fantasy action RPG set in a Three Kingdoms China.",img:"https://placehold.co/300x400/000d0d/00ff88?text=Wo+Long"},
+{id:15,title:"Sifu",genre:"Action",platform:"BOTH",price:4999,desc:"A kung fu master seeks revenge in a breathtaking martial arts journey.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Sifu"},
+
+// === RPG ===
+{id:16,title:"Elden Ring",genre:"RPG",platform:"BOTH",price:8999,desc:"FromSoftware's masterpiece — an open-world dark fantasy RPG.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Elden+Ring"},
+{id:17,title:"Final Fantasy XVI",genre:"RPG",platform:"PS",price:8499,desc:"Clive Rosfield fights to reclaim a world ravaged by Dominants.",img:"https://placehold.co/300x400/00001a/b820ff?text=FF+XVI"},
+{id:18,title:"Final Fantasy VII Rebirth",genre:"RPG",platform:"PS",price:9499,desc:"Cloud and AVALANCHE continue their fight against the Shinra empire.",img:"https://placehold.co/300x400/000d00/00ff88?text=FF7+Rebirth"},
+{id:19,title:"Baldur's Gate 3",genre:"RPG",platform:"BOTH",price:8999,desc:"The greatest RPG in a generation — infinite choice, endless adventure.",img:"https://placehold.co/300x400/0a0020/b820ff?text=BG3"},
+{id:20,title:"The Witcher 3: Wild Hunt",genre:"RPG",platform:"BOTH",price:4999,desc:"Geralt hunts his adopted daughter across a war-ravaged continent.",img:"https://placehold.co/300x400/001a00/00ff88?text=Witcher+3"},
+{id:21,title:"Dragon's Dogma 2",genre:"RPG",platform:"BOTH",price:8999,desc:"An action RPG where you forge destiny in an epic fantasy world.",img:"https://placehold.co/300x400/1a0500/ff2d78?text=Dragons+Dogma+2"},
+{id:22,title:"Tales of Arise",genre:"RPG",platform:"BOTH",price:5499,desc:"Two worlds, two peoples, and a fight for liberation.",img:"https://placehold.co/300x400/0d0020/b820ff?text=Tales+Arise"},
+{id:23,title:"Starfield",genre:"RPG",platform:"XBOX",price:8999,desc:"Bethesda's space epic — 1000+ planets to explore.",img:"https://placehold.co/300x400/00000d/00c8ff?text=Starfield"},
+{id:24,title:"Cyberpunk 2077",genre:"RPG",platform:"BOTH",price:5999,desc:"V navigates Night City's dark underworld in this neon RPG.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Cyberpunk+2077"},
+{id:25,title:"Hogwarts Legacy",genre:"RPG",platform:"BOTH",price:7499,desc:"Explore Hogwarts in the 1800s in this magical open-world RPG.",img:"https://placehold.co/300x400/000d1a/b820ff?text=Hogwarts+Legacy"},
+{id:26,title:"Monster Hunter World: Iceborne",genre:"RPG",platform:"BOTH",price:4499,desc:"Hunt massive monsters in an evolving, living world.",img:"https://placehold.co/300x400/001a0d/00ff88?text=MH+Iceborne"},
+{id:27,title:"Persona 5 Royal",genre:"RPG",platform:"BOTH",price:5999,desc:"The Phantom Thieves steal corrupt hearts in stylish JRPG glory.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Persona+5R"},
+{id:28,title:"Like a Dragon: Infinite Wealth",genre:"RPG",platform:"BOTH",price:8999,desc:"Ichiban and Kiryu face new adventures in Hawaii.",img:"https://placehold.co/300x400/000d1a/00c8ff?text=Infinite+Wealth"},
+{id:29,title:"Metaphor ReFantazio",genre:"RPG",platform:"BOTH",price:8499,desc:"A journey through a fantastical kingdom steeped in politics and magic.",img:"https://placehold.co/300x400/0a0020/b820ff?text=Metaphor"},
+{id:30,title:"Dragon Age: The Veilguard",genre:"RPG",platform:"BOTH",price:8999,desc:"BioWare returns to Thedas for an epic tale of gods and choices.",img:"https://placehold.co/300x400/001a00/00ff88?text=Dragon+Age"},
+
+// === SHOOTER ===
+{id:31,title:"Call of Duty: Modern Warfare III",genre:"Shooter",platform:"BOTH",price:9499,desc:"Task Force 141 faces their deadliest enemy yet — Makarov.",img:"https://placehold.co/300x400/0d0d0d/00c8ff?text=MW3"},
+{id:32,title:"Halo Infinite",genre:"Shooter",platform:"XBOX",price:5499,desc:"Master Chief returns in the most expansive Halo ever made.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Halo+Infinite"},
+{id:33,title:"Doom Eternal",genre:"Shooter",platform:"BOTH",price:4999,desc:"The Doom Slayer rips and tears through Hell's armies.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Doom+Eternal"},
+{id:34,title:"Borderlands 3",genre:"Shooter",platform:"BOTH",price:4499,desc:"Looter-shooter mayhem across alien worlds with billions of guns.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Borderlands+3"},
+{id:35,title:"Titanfall 2",genre:"Shooter",platform:"BOTH",price:2999,desc:"A pilot and his Titan fight across the Frontier in a legendary shooter.",img:"https://placehold.co/300x400/00001a/00c8ff?text=Titanfall+2"},
+{id:36,title:"Remnant II",genre:"Shooter",platform:"BOTH",price:7499,desc:"A third-person shooter RPG through procedurally generated worlds.",img:"https://placehold.co/300x400/0d0500/ff2d78?text=Remnant+II"},
+{id:37,title:"Outriders: Worldslayer",genre:"Shooter",platform:"BOTH",price:5499,desc:"Co-op shooter RPG with massive endgame expansion.",img:"https://placehold.co/300x400/1a001a/b820ff?text=Outriders"},
+{id:38,title:"Metro Exodus",genre:"Shooter",platform:"BOTH",price:3999,desc:"Artyom leaves Moscow's tunnels for a post-apocalyptic Russia.",img:"https://placehold.co/300x400/0d0d00/ffd700?text=Metro+Exodus"},
+{id:39,title:"Deathloop",genre:"Shooter",platform:"BOTH",price:5499,desc:"A stylish time-loop assassination game on a mysterious island.",img:"https://placehold.co/300x400/1a0500/ffd700?text=Deathloop"},
+{id:40,title:"Atomic Heart",genre:"Shooter",platform:"BOTH",price:6999,desc:"A Soviet-era alternate universe filled with killer robots and mystery.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Atomic+Heart"},
+
+// === HORROR ===
+{id:41,title:"Resident Evil 4 Remake",genre:"Horror",platform:"BOTH",price:7499,desc:"Leon S. Kennedy rescues the President's daughter from a cult.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=RE4+Remake"},
+{id:42,title:"Resident Evil Village",genre:"Horror",platform:"BOTH",price:5999,desc:"Ethan Winters faces Lady Dimitrescu in a terrifying village.",img:"https://placehold.co/300x400/0d0500/ffd700?text=RE+Village"},
+{id:43,title:"Alan Wake 2",genre:"Horror",platform:"BOTH",price:7999,desc:"A writer trapped in a Dark Place and an FBI agent solve a mystery.",img:"https://placehold.co/300x400/00001a/00c8ff?text=Alan+Wake+2"},
+{id:44,title:"Dead Space Remake",genre:"Horror",platform:"BOTH",price:7499,desc:"Isaac Clarke dismembers necromorphs aboard the USG Ishimura.",img:"https://placehold.co/300x400/000d0d/ff2d78?text=Dead+Space"},
+{id:45,title:"The Callisto Protocol",genre:"Horror",platform:"BOTH",price:5999,desc:"Survive a brutal prison outbreak on Jupiter's moon Callisto.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Callisto+Protocol"},
+{id:46,title:"Until Dawn Remake",genre:"Horror",platform:"PS",price:6499,desc:"Eight friends face a nightmare on a snowy mountain.",img:"https://placehold.co/300x400/000d1a/b820ff?text=Until+Dawn"},
+{id:47,title:"Amnesia: The Bunker",genre:"Horror",platform:"BOTH",price:3999,desc:"Survive a WWI bunker haunted by a mysterious monster.",img:"https://placehold.co/300x400/0d0d00/ffd700?text=Amnesia"},
+{id:48,title:"Layers of Fear",genre:"Horror",platform:"BOTH",price:3499,desc:"A twisted painter's descent into madness through a haunted estate.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Layers+Fear"},
+{id:49,title:"Little Nightmares II",genre:"Horror",platform:"BOTH",price:3999,desc:"Mono and Six escape a city broadcasting a terrifying signal.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Little+Nightmares"},
+{id:50,title:"SOMA",genre:"Horror",platform:"BOTH",price:2999,desc:"Existential horror deep beneath the ocean with AI and identity.",img:"https://placehold.co/300x400/000d1a/00c8ff?text=SOMA"},
+
+// === SPORTS ===
+{id:51,title:"EA Sports FC 25",genre:"Sports",platform:"BOTH",price:8499,desc:"Next-generation football with HyperMotion V technology.",img:"https://placehold.co/300x400/001a00/00ff88?text=EA+FC+25"},
+{id:52,title:"NBA 2K25",genre:"Sports",platform:"BOTH",price:8499,desc:"The most authentic basketball experience with revamped MyCareer.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=NBA+2K25"},
+{id:53,title:"WWE 2K24",genre:"Sports",platform:"BOTH",price:7999,desc:"40 years of WrestleMania celebrated in the biggest WWE game ever.",img:"https://placehold.co/300x400/1a0000/ffd700?text=WWE+2K24"},
+{id:54,title:"Madden NFL 25",genre:"Sports",platform:"BOTH",price:8499,desc:"50th anniversary edition with Boom Tech collision system.",img:"https://placehold.co/300x400/001a00/00ff88?text=Madden+25"},
+{id:55,title:"MLB The Show 24",genre:"Sports",platform:"BOTH",price:7999,desc:"The definitive baseball simulation returns with new gameplay.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=MLB+24"},
+{id:56,title:"PGA Tour 2K25",genre:"Sports",platform:"BOTH",price:6999,desc:"Play real courses with the most realistic golf physics ever.",img:"https://placehold.co/300x400/001a00/00ff88?text=PGA+Tour"},
+{id:57,title:"Tony Hawk's Pro Skater 1+2",genre:"Sports",platform:"BOTH",price:3999,desc:"The legendary skateboarding classic rebuilt from the ground up.",img:"https://placehold.co/300x400/0d0d00/ffd700?text=Tony+Hawk"},
+{id:58,title:"Cricket 24",genre:"Sports",platform:"BOTH",price:5999,desc:"Official ICC game featuring all major cricket tournaments.",img:"https://placehold.co/300x400/001a00/00ff88?text=Cricket+24"},
+{id:59,title:"Riders Republic",genre:"Sports",platform:"BOTH",price:3999,desc:"Mass-multiplayer extreme sports in stunning US national parks.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Riders+Republic"},
+{id:60,title:"Skate 3",genre:"Sports",platform:"BOTH",price:2999,desc:"Build your skate empire in Port Carverton with legendary gameplay.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Skate+3"},
+
+// === RACING ===
+{id:61,title:"Gran Turismo 7",genre:"Racing",platform:"PS",price:7999,desc:"The ultimate driving simulator with over 400 real cars.",img:"https://placehold.co/300x400/000d1a/00c8ff?text=Gran+Turismo+7"},
+{id:62,title:"Forza Horizon 5",genre:"Racing",platform:"XBOX",price:7499,desc:"An open-world racing festival set across stunning Mexico.",img:"https://placehold.co/300x400/001a00/00ff88?text=Forza+Horizon+5"},
+{id:63,title:"Forza Motorsport (2023)",genre:"Racing",platform:"XBOX",price:7999,desc:"The most technically advanced Forza ever built.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Forza+Motorsport"},
+{id:64,title:"Need for Speed Unbound",genre:"Racing",platform:"BOTH",price:5499,desc:"High-stakes street racing with unique art style in Lakeshore City.",img:"https://placehold.co/300x400/0d0500/ffd700?text=NFS+Unbound"},
+{id:65,title:"WRC Generations",genre:"Racing",platform:"BOTH",price:5999,desc:"The most complete WRC experience with hybrid cars.",img:"https://placehold.co/300x400/001a00/00ff88?text=WRC+Generations"},
+{id:66,title:"Dirt 5",genre:"Racing",platform:"BOTH",price:3999,desc:"Bold, colourful, and thrilling off-road racing worldwide.",img:"https://placehold.co/300x400/1a0500/ff2d78?text=Dirt+5"},
+{id:67,title:"F1 24",genre:"Racing",platform:"BOTH",price:7499,desc:"Official Formula 1 game with revamped career mode.",img:"https://placehold.co/300x400/001a00/ff2d78?text=F1+24"},
+{id:68,title:"Crash Team Racing: Nitro-Fueled",genre:"Racing",platform:"BOTH",price:3499,desc:"The beloved kart racer rebuilt in stunning detail.",img:"https://placehold.co/300x400/1a0500/ffd700?text=CTR"},
+{id:69,title:"The Crew Motorfest",genre:"Racing",platform:"BOTH",price:6499,desc:"A racing festival set across the beautiful island of O'ahu, Hawaii.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Crew+Motorfest"},
+{id:70,title:"Moto GP 24",genre:"Racing",platform:"BOTH",price:6999,desc:"The definitive MotoGP experience with real riders and bikes.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=MotoGP+24"},
+
+// === ADVENTURE ===
+{id:71,title:"The Last of Us Part I",genre:"Adventure",platform:"PS",price:7999,desc:"Joel escorts Ellie across a post-pandemic America in this masterpiece.",img:"https://placehold.co/300x400/0d0500/ffd700?text=TLOU+Part+I"},
+{id:72,title:"The Last of Us Part II",genre:"Adventure",platform:"PS",price:6999,desc:"Ellie's quest for revenge and its devastating consequences.",img:"https://placehold.co/300x400/0d0d00/ffd700?text=TLOU+Part+II"},
+{id:73,title:"Uncharted 4",genre:"Adventure",platform:"PS",price:4999,desc:"Nathan Drake's final adventure in search of pirate treasure.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Uncharted+4"},
+{id:74,title:"Uncharted: Legacy of Thieves",genre:"Adventure",platform:"PS",price:5999,desc:"Chloe and Nadine race for an ancient lost city.",img:"https://placehold.co/300x400/001a00/00c8ff?text=Uncharted+LoT"},
+{id:75,title:"Horizon Forbidden West",genre:"Adventure",platform:"PS",price:7999,desc:"Aloy explores the lush and dangerous Forbidden West.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Horizon+FW"},
+{id:76,title:"A Plague Tale: Requiem",genre:"Adventure",platform:"BOTH",price:6999,desc:"Amicia and Hugo flee across a stunning but brutal medieval world.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Plague+Tale"},
+{id:77,title:"Indiana Jones: The Great Circle",genre:"Adventure",platform:"XBOX",price:8499,desc:"Indy explores a worldwide mystery in 1937 in breathtaking action.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Indiana+Jones"},
+{id:78,title:"Immortals Fenyx Rising",genre:"Adventure",platform:"BOTH",price:3999,desc:"A mythical open world full of gods, monsters, and legend.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Immortals"},
+{id:79,title:"Kena: Bridge of Spirits",genre:"Adventure",platform:"BOTH",price:4499,desc:"A spirit guide helps lost souls move on in a beautiful world.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Kena"},
+{id:80,title:"It Takes Two",genre:"Adventure",platform:"BOTH",price:4999,desc:"A couple must work together to save their relationship.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=It+Takes+Two"},
+
+// === FIGHTING ===
+{id:81,title:"Mortal Kombat 1",genre:"Fighting",platform:"BOTH",price:8499,desc:"Liu Kang rebuilds the universe — a brutal new era begins.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=MK1"},
+{id:82,title:"Street Fighter 6",genre:"Fighting",platform:"BOTH",price:7999,desc:"A new era with Drive System mechanics and open-world World Tour.",img:"https://placehold.co/300x400/0d0000/ffd700?text=SF6"},
+{id:83,title:"Tekken 8",genre:"Fighting",platform:"BOTH",price:8499,desc:"Jin Kazama faces his father Kazuya in the ultimate Tekken showdown.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Tekken+8"},
+{id:84,title:"Dragon Ball FighterZ",genre:"Fighting",platform:"BOTH",price:3999,desc:"Anime-accurate 3v3 fighting with stunning cel-shaded visuals.",img:"https://placehold.co/300x400/1a0500/ffd700?text=DBFZ"},
+{id:85,title:"Guilty Gear Strive",genre:"Fighting",platform:"BOTH",price:5499,desc:"The most accessible and visually stunning Guilty Gear game ever.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=GG+Strive"},
+{id:86,title:"Injustice 2",genre:"Fighting",platform:"BOTH",price:2999,desc:"DC heroes and villains clash in a multiverse-shattering crisis.",img:"https://placehold.co/300x400/000d1a/b820ff?text=Injustice+2"},
+{id:87,title:"Granblue Fantasy Versus: Rising",genre:"Fighting",platform:"BOTH",price:5999,desc:"Stunning anime fighter with tag mechanics and vast roster.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=GBF+Rising"},
+{id:88,title:"Naruto X Boruto Storm Connections",genre:"Fighting",platform:"BOTH",price:5999,desc:"Comprehensive Naruto saga fighter spanning 20 years of anime.",img:"https://placehold.co/300x400/1a0500/ffd700?text=Naruto+Storm"},
+{id:89,title:"Power Rangers: Battle for the Grid",genre:"Fighting",platform:"BOTH",price:2499,desc:"Tag-team fighter featuring heroes and villains from across the franchise.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Power+Rangers"},
+{id:90,title:"Jump Force",genre:"Fighting",platform:"BOTH",price:2999,desc:"Manga heroes from Dragon Ball, Naruto, One Piece unite to fight.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Jump+Force"},
+
+// === STRATEGY ===
+{id:91,title:"Hades II",genre:"Strategy",platform:"BOTH",price:4999,desc:"Melinoe wages war against Chronos in this roguelike sequel.",img:"https://placehold.co/300x400/1a0020/b820ff?text=Hades+II"},
+{id:92,title:"Humankind",genre:"Strategy",platform:"BOTH",price:4499,desc:"Rewrite human history in this civilization-building epic.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Humankind"},
+{id:93,title:"Age of Wonders 4",genre:"Strategy",platform:"BOTH",price:5999,desc:"Build magical empires and lead mystical races to victory.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Age+Wonders+4"},
+{id:94,title:"Frostpunk 2",genre:"Strategy",platform:"BOTH",price:5999,desc:"Lead a frozen civilization through resource scarcity and politics.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Frostpunk+2"},
+{id:95,title:"Phoenix Point",genre:"Strategy",platform:"BOTH",price:3999,desc:"Turn-based tactics against an alien mutation threatening humanity.",img:"https://placehold.co/300x400/000d1a/b820ff?text=Phoenix+Point"},
+
+// === SIMULATION ===
+{id:96,title:"PowerWash Simulator",genre:"Simulation",platform:"BOTH",price:3499,desc:"Satisfyingly clean everything in sight — a surprising hit.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=PowerWash+Sim"},
+{id:97,title:"Two Point Campus",genre:"Simulation",platform:"BOTH",price:3999,desc:"Build and manage the university of your dreams.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Two+Point"},
+{id:98,title:"Planet Coaster 2",genre:"Simulation",platform:"BOTH",price:5999,desc:"Design the ultimate theme park with water rides and complex systems.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Planet+Coaster+2"},
+{id:99,title:"Farming Simulator 25",genre:"Simulation",platform:"BOTH",price:6499,desc:"Manage a modern farm with hundreds of authentic machines.",img:"https://placehold.co/300x400/001a00/00ff88?text=Farm+Sim+25"},
+{id:100,title:"House Flipper 2",genre:"Simulation",platform:"BOTH",price:3999,desc:"Buy, renovate, and sell houses in the ultimate fixer-upper sim.",img:"https://placehold.co/300x400/0d0500/ffd700?text=House+Flipper"},
+
+// MORE ACTION
+{id:101,title:"Assassin's Creed Mirage",genre:"Action",platform:"BOTH",price:6999,desc:"Basim masters the ways of the Hidden Ones in Baghdad.",img:"https://placehold.co/300x400/0d0500/ffd700?text=AC+Mirage"},
+{id:102,title:"Assassin's Creed Shadows",genre:"Action",platform:"BOTH",price:8999,desc:"Two assassins — a samurai and a shinobi — in feudal Japan.",img:"https://placehold.co/300x400/0d0d00/b820ff?text=AC+Shadows"},
+{id:103,title:"Marvel's Wolverine",genre:"Action",platform:"PS",price:8999,desc:"James Howlett unleashes fury in an adult Wolverine story.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Wolverine"},
+{id:104,title:"Black Myth: Wukong",genre:"Action",platform:"BOTH",price:8499,desc:"Play as Sun Wukong in a breathtaking Chinese mythology action RPG.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Black+Myth"},
+{id:105,title:"Rise of the Ronin",genre:"Action",platform:"PS",price:7999,desc:"A blade-for-hire roams the turbulent end of Japan's shogunate.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Rise+Ronin"},
+{id:106,title:"Thymesia",genre:"Action",platform:"BOTH",price:2999,desc:"A fast-paced souls-like in a plague-ravaged kingdom.",img:"https://placehold.co/300x400/1a0020/b820ff?text=Thymesia"},
+{id:107,title:"Lies of P",genre:"Action",platform:"BOTH",price:6999,desc:"Pinocchio rethought as a dark souls-like set in Belle Époque.",img:"https://placehold.co/300x400/1a0000/ffd700?text=Lies+of+P"},
+{id:108,title:"Lords of the Fallen",genre:"Action",platform:"BOTH",price:7499,desc:"Battle in two interconnected realms in this dark fantasy souls-like.",img:"https://placehold.co/300x400/0d0020/b820ff?text=Lords+Fallen"},
+{id:109,title:"Warhammer 40K: Space Marine 2",genre:"Action",platform:"BOTH",price:7999,desc:"Captain Titus fights the Tyranid swarm in glorious third-person carnage.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Space+Marine+2"},
+{id:110,title:"Alone in the Dark",genre:"Horror",platform:"BOTH",price:5499,desc:"A reimagining of the classic horror game set in 1920s Louisiana.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Alone+Dark"},
+
+// MORE RPG
+{id:111,title:"Star Wars: Jedi Survivor",genre:"RPG",platform:"BOTH",price:7999,desc:"Cal Kestis continues his fight against the Empire in this epic sequel.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Jedi+Survivor"},
+{id:112,title:"Star Wars: Jedi Fallen Order",genre:"RPG",platform:"BOTH",price:4499,desc:"A Padawan becomes a Jedi Knight in this cinematic adventure.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Jedi+Fallen+Order"},
+{id:113,title:"Dying Light 2",genre:"RPG",platform:"BOTH",price:5999,desc:"Parkour through a zombie city where your choices shape the world.",img:"https://placehold.co/300x400/001a00/00ff88?text=Dying+Light+2"},
+{id:114,title:"Scarlet Nexus",genre:"RPG",platform:"BOTH",price:4499,desc:"Psychokinetic warriors fight mutant Others in a brain-punk future.",img:"https://placehold.co/300x400/0d0020/b820ff?text=Scarlet+Nexus"},
+{id:115,title:"Forspoken",genre:"RPG",platform:"PS",price:4999,desc:"Frey uses magical parkour powers to survive a shattered kingdom.",img:"https://placehold.co/300x400/000d1a/b820ff?text=Forspoken"},
+{id:116,title:"Ghostwire: Tokyo",genre:"RPG",platform:"PS",price:5499,desc:"Yokai haunt a deserted Tokyo and only you can save it.",img:"https://placehold.co/300x400/001a1a/b820ff?text=Ghostwire"},
+{id:117,title:"Final Fantasy XV",genre:"RPG",platform:"BOTH",price:3999,desc:"Noctis and friends journey across a stunning open world.",img:"https://placehold.co/300x400/0d0d00/ffd700?text=FF+XV"},
+{id:118,title:"NieR: Automata",genre:"RPG",platform:"BOTH",price:4499,desc:"Androids 2B and 9S fight for humanity in a post-apocalyptic Earth.",img:"https://placehold.co/300x400/0d0d0d/00c8ff?text=NieR+Automata"},
+{id:119,title:"Code Vein",genre:"RPG",platform:"BOTH",price:3999,desc:"Vampire-like Revenants fight to survive in a dark, ruined world.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Code+Vein"},
+{id:120,title:"Greedfall 2",genre:"RPG",platform:"BOTH",price:5999,desc:"A colonial-era RPG on a magical island full of intrigue.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Greedfall+2"},
+
+// MORE SHOOTER
+{id:121,title:"Halo 5: Guardians",genre:"Shooter",platform:"XBOX",price:3499,desc:"Master Chief vs Fireteam Osiris in epic sci-fi combat.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Halo+5"},
+{id:122,title:"Gears 5",genre:"Shooter",platform:"XBOX",price:4999,desc:"Kait discovers her Locust heritage in this stunning Gears sequel.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Gears+5"},
+{id:123,title:"Gears of War 4",genre:"Shooter",platform:"XBOX",price:3999,desc:"JD Fenix takes the fight to the Swarm 25 years later.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Gears+4"},
+{id:124,title:"Returnal",genre:"Shooter",platform:"PS",price:7499,desc:"Selene fights through alien hordes in a bullet-hell roguelite.",img:"https://placehold.co/300x400/001a1a/b820ff?text=Returnal+shooter"},
+{id:125,title:"The Outer Worlds",genre:"Shooter",platform:"BOTH",price:3499,desc:"Obsidian's retro-futuristic space colony RPG-shooter.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Outer+Worlds"},
+{id:126,title:"Rage 2",genre:"Shooter",platform:"BOTH",price:2999,desc:"Neon-soaked post-apocalyptic shooter with brutal mutant enemies.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Rage+2"},
+{id:127,title:"Wolfenstein II",genre:"Shooter",platform:"BOTH",price:2999,desc:"BJ Blazkowicz liberates America from Nazi occupation.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Wolfenstein+II"},
+{id:128,title:"Far Cry 6",genre:"Shooter",platform:"BOTH",price:5499,desc:"Dani Rojas fights to free Yara from dictator Antón Castillo.",img:"https://placehold.co/300x400/001a00/00ff88?text=Far+Cry+6"},
+{id:129,title:"Far Cry 5",genre:"Shooter",platform:"BOTH",price:3499,desc:"A cult has taken over Hope County, Montana.",img:"https://placehold.co/300x400/001a00/00ff88?text=Far+Cry+5"},
+{id:130,title:"Prey",genre:"Shooter",platform:"BOTH",price:2999,desc:"Morgan Yu fights alien Typhon aboard Talos I space station.",img:"https://placehold.co/300x400/000d1a/00c8ff?text=Prey"},
+
+// MORE ADVENTURE
+{id:131,title:"Death Stranding Director's Cut",genre:"Adventure",platform:"BOTH",price:5999,desc:"Sam Porter Bridges reconnects a fractured America by delivering cargo.",img:"https://placehold.co/300x400/0d0d0d/ffd700?text=Death+Stranding"},
+{id:132,title:"Psychonauts 2",genre:"Adventure",platform:"BOTH",price:3999,desc:"Raz dives into troubled minds in this critically-acclaimed platformer.",img:"https://placehold.co/300x400/1a0020/b820ff?text=Psychonauts+2"},
+{id:133,title:"Ori and the Will of the Wisps",genre:"Adventure",platform:"XBOX",price:3499,desc:"A breathtaking platformer about loss, hope, and belonging.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Ori+WOTW"},
+{id:134,title:"Hellblade II",genre:"Adventure",platform:"XBOX",price:7999,desc:"Senua's psyche-driven journey continues in Iceland.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Hellblade+II"},
+{id:135,title:"Control Ultimate Edition",genre:"Adventure",platform:"BOTH",price:3999,desc:"Jesse Faden battles supernatural forces in the Federal Bureau of Control.",img:"https://placehold.co/300x400/000d1a/b820ff?text=Control"},
+{id:136,title:"Outer Wilds",genre:"Adventure",platform:"BOTH",price:2999,desc:"Explore a solar system stuck in a time loop before the sun explodes.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Outer+Wilds"},
+{id:137,title:"Tunic",genre:"Adventure",platform:"BOTH",price:2999,desc:"A tiny fox explores a beautiful, dangerous world full of secrets.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Tunic"},
+{id:138,title:"Sea of Stars",genre:"Adventure",platform:"BOTH",price:3999,desc:"A gorgeous turn-based RPG inspired by classic 16-bit adventures.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Sea+of+Stars"},
+{id:139,title:"Stray",genre:"Adventure",platform:"BOTH",price:3499,desc:"A stray cat navigates a cybercity to find its family.",img:"https://placehold.co/300x400/0d0020/b820ff?text=Stray"},
+{id:140,title:"Ghostrunner",genre:"Adventure",platform:"BOTH",price:3499,desc:"One-hit kill parkour cyberpunk action in a towering megacity.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Ghostrunner"},
+
+// EXTRA GAMES
+{id:141,title:"Redfall",genre:"Shooter",platform:"XBOX",price:4999,desc:"Co-op shooter against a legion of vampires in an open world.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Redfall"},
+{id:142,title:"Deathloop Deluxe",genre:"Shooter",platform:"PS",price:6499,desc:"Expanded version with DLC content of the stylish time-loop assassin game.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Deathloop+DX"},
+{id:143,title:"Marvel's Midnight Suns",genre:"Strategy",platform:"BOTH",price:5999,desc:"Tactical RPG with Marvel heroes battling supernatural threats.",img:"https://placehold.co/300x400/001a1a/b820ff?text=Midnight+Suns"},
+{id:144,title:"Gotham Knights",genre:"Action",platform:"BOTH",price:5499,desc:"Batman's family defends Gotham after Bruce Wayne's death.",img:"https://placehold.co/300x400/000d1a/00c8ff?text=Gotham+Knights"},
+{id:145,title:"Saints Row (2022)",genre:"Action",platform:"BOTH",price:4999,desc:"Build your criminal empire from scratch in Santo Ileso.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Saints+Row"},
+{id:146,title:"Fortnite Chapter 5 Pack",genre:"Shooter",platform:"BOTH",price:2499,desc:"Premium Fortnite Season starter pack with exclusive cosmetics.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Fortnite+Pack"},
+{id:147,title:"Back 4 Blood",genre:"Shooter",platform:"BOTH",price:3999,desc:"4-player co-op zombie shooter from the Left 4 Dead creators.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Back+4+Blood"},
+{id:148,title:"Outriders",genre:"Shooter",platform:"BOTH",price:3499,desc:"Third-person co-op shooter RPG on a hostile alien planet.",img:"https://placehold.co/300x400/1a001a/b820ff?text=Outriders"},
+{id:149,title:"Evil Dead: The Game",genre:"Horror",platform:"BOTH",price:2999,desc:"Survive against or play as the Deadites in asymmetric horror.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Evil+Dead"},
+{id:150,title:"The Dark Pictures Anthology",genre:"Horror",platform:"BOTH",price:3999,desc:"A series of cinematic horror games where choices matter.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Dark+Pictures"},
+{id:151,title:"Sackboy: A Big Adventure",genre:"Adventure",platform:"PS",price:4499,desc:"Sackboy embarks on a whimsical 3D platforming adventure.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Sackboy"},
+{id:152,title:"Ratchet & Clank: Rift Apart",genre:"Adventure",platform:"PS",price:6499,desc:"Ratchet and a new lombax leap across dimensions in stunning PS5 glory.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Ratchet+Clank"},
+{id:153,title:"Demon's Souls Remake",genre:"RPG",platform:"PS",price:5999,desc:"The original FromSoftware classic rebuilt from scratch for PS5.",img:"https://placehold.co/300x400/0d0020/b820ff?text=Demons+Souls"},
+{id:154,title:"Concrete Genie",genre:"Adventure",platform:"PS",price:2499,desc:"A bullied boy uses magical paint to reclaim his city.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Concrete+Genie"},
+{id:155,title:"Borderlands 2",genre:"Shooter",platform:"BOTH",price:1999,desc:"Vault hunters battle the ruthless Handsome Jack across Pandora.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Borderlands+2"},
+{id:156,title:"Borderlands: The Pre-Sequel",genre:"Shooter",platform:"BOTH",price:1999,desc:"Play as Handsome Jack's crew in low-gravity moon combat.",img:"https://placehold.co/300x400/001a00/00ff88?text=BL+Pre-Sequel"},
+{id:157,title:"Mass Effect Legendary Edition",genre:"RPG",platform:"BOTH",price:5999,desc:"All three Mass Effect games remastered in one epic collection.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Mass+Effect+LE"},
+{id:158,title:"Dragon Ball Z: Kakarot",genre:"RPG",platform:"BOTH",price:4499,desc:"Relive Goku's entire story from Saiyan Saga to Beerus.",img:"https://placehold.co/300x400/0d0500/ffd700?text=DBZ+Kakarot"},
+{id:159,title:"One Piece Odyssey",genre:"RPG",platform:"BOTH",price:5499,desc:"The Straw Hats relive their greatest adventures in a new JRPG.",img:"https://placehold.co/300x400/0d0500/ffd700?text=One+Piece+Odyssey"},
+{id:160,title:"My Hero Ultra Rumble",genre:"Fighting",platform:"BOTH",price:2499,desc:"Battle royale featuring Plus Ultra heroes and villains.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=MHA+Rumble"},
+{id:161,title:"Crash Bandicoot 4",genre:"Adventure",platform:"BOTH",price:4499,desc:"Crash and Coco adventure through multiple timelines and dimensions.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Crash+4"},
+{id:162,title:"SpongeBob: Battle for Bikini Bottom",genre:"Adventure",platform:"BOTH",price:2999,desc:"The beloved PS2 classic rehydrated in beautiful HD.",img:"https://placehold.co/300x400/0d0500/ffd700?text=SpongeBob"},
+{id:163,title:"LEGO Star Wars: Skywalker Saga",genre:"Adventure",platform:"BOTH",price:4999,desc:"All nine Star Wars films rebuilt in charming LEGO form.",img:"https://placehold.co/300x400/001a1a/ffd700?text=LEGO+SW"},
+{id:164,title:"Sonic Frontiers",genre:"Adventure",platform:"BOTH",price:5499,desc:"Sonic races across open-zone islands with new combat and puzzles.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Sonic+Frontiers"},
+{id:165,title:"Sonic Superstars",genre:"Adventure",platform:"BOTH",price:4999,desc:"Classic 2D Sonic gameplay returns with 4-player co-op.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Sonic+Superstars"},
+{id:166,title:"Cuphead: The Delicious Last Course",genre:"Action",platform:"BOTH",price:2499,desc:"New island, new boss fights, and a new playable character — Ms. Chalice.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Cuphead+DLC"},
+{id:167,title:"Hollow Knight: Silksong",genre:"Action",platform:"BOTH",price:3499,desc:"Hornet searches for answers in a vast new kingdom.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Silksong"},
+{id:168,title:"Biomutant",genre:"RPG",platform:"BOTH",price:2999,desc:"A post-apocalyptic kung-fu fable RPG with open-world exploration.",img:"https://placehold.co/300x400/001a00/00ff88?text=Biomutant"},
+{id:169,title:"Chorus",genre:"Shooter",platform:"BOTH",price:3499,desc:"A starfighter pilot seeks redemption in this stylish space shooter.",img:"https://placehold.co/300x400/001a1a/b820ff?text=Chorus"},
+{id:170,title:"Solar Ash",genre:"Action",platform:"BOTH",price:3499,desc:"Skate through a surreal void to save your home world.",img:"https://placehold.co/300x400/001a0d/b820ff?text=Solar+Ash"},
+{id:171,title:"Trek to Yomi",genre:"Action",platform:"BOTH",price:2999,desc:"Cinematic black-and-white samurai adventure inspired by classic film.",img:"https://placehold.co/300x400/0d0d0d/ffd700?text=Trek+to+Yomi"},
+{id:172,title:"Midnight Fight Express",genre:"Fighting",platform:"BOTH",price:2499,desc:"Isometric brawler with fluid combat across a criminal city.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Midnight+Fight"},
+{id:173,title:"Vampire Survivors",genre:"Action",platform:"BOTH",price:999,desc:"Survive waves of monsters in this addictive roguelite phenomenon.",img:"https://placehold.co/300x400/1a0000/ffd700?text=Vampire+Survivors"},
+{id:174,title:"Hades",genre:"Action",platform:"BOTH",price:3499,desc:"Zagreus escapes the Underworld in the acclaimed roguelite masterpiece.",img:"https://placehold.co/300x400/1a0020/b820ff?text=Hades"},
+{id:175,title:"Dead Cells",genre:"Action",platform:"BOTH",price:2499,desc:"Roguelite metroidvania where death leads to growth.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Dead+Cells"},
+{id:176,title:"Inscryption",genre:"Strategy",platform:"BOTH",price:2499,desc:"A deckbuilding roguelite full of dark mystery and horror.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Inscryption"},
+{id:177,title:"Disco Elysium: Final Cut",genre:"RPG",platform:"BOTH",price:3499,desc:"The most original RPG in decades — fully voice-acted and expanded.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Disco+Elysium"},
+{id:178,title:"Desperados III",genre:"Strategy",platform:"BOTH",price:2999,desc:"Real-time tactics in the Wild West with stealth and strategy.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Desperados+III"},
+{id:179,title:"Gris",genre:"Adventure",platform:"BOTH",price:1999,desc:"A wordless, beautiful journey through grief and rebirth.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Gris"},
+{id:180,title:"Cocoon",genre:"Adventure",platform:"BOTH",price:2499,desc:"Solve intricate world-within-world puzzles in this sci-fi gem.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Cocoon"},
+{id:181,title:"Titanquest: Atlantis",genre:"RPG",platform:"BOTH",price:2999,desc:"Hack-and-slash your way through mythological worlds.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Titan+Quest"},
+{id:182,title:"Crossfire X",genre:"Shooter",platform:"XBOX",price:2499,desc:"The global competitive shooter with story campaign by Remedy.",img:"https://placehold.co/300x400/0d0d0d/00c8ff?text=Crossfire+X"},
+{id:183,title:"The Medium",genre:"Horror",platform:"BOTH",price:4499,desc:"A medium explores two worlds simultaneously in this atmospheric horror.",img:"https://placehold.co/300x400/0d0020/b820ff?text=The+Medium"},
+{id:184,title:"Observer: System Redux",genre:"Horror",platform:"BOTH",price:2999,desc:"A cyberpunk detective hacks dying minds in a dystopian 2084.",img:"https://placehold.co/300x400/000d1a/b820ff?text=Observer"},
+{id:185,title:"Tormented Souls",genre:"Horror",platform:"BOTH",price:2499,desc:"Old-school survival horror inspired by early Resident Evil games.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Tormented+Souls"},
+{id:186,title:"Song of Horror",genre:"Horror",platform:"BOTH",price:2499,desc:"Cosmic horror adventure where death is permanent.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Song+of+Horror"},
+{id:187,title:"Maquette",genre:"Adventure",platform:"PS",price:2499,desc:"A recursive puzzle game where small and large worlds interlock.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Maquette"},
+{id:188,title:"Bugsnax",genre:"Adventure",platform:"PS",price:2499,desc:"Catch snack-like creatures and feed the inhabitants of Snaktooth Island.",img:"https://placehold.co/300x400/001a00/ffd700?text=Bugsnax"},
+{id:189,title:"Cris Tales",genre:"RPG",platform:"BOTH",price:2999,desc:"A gorgeous love letter to classic JRPGs with time manipulation.",img:"https://placehold.co/300x400/001a1a/b820ff?text=Cris+Tales"},
+{id:190,title:"Backbone",genre:"Adventure",platform:"BOTH",price:1999,desc:"Noir detective adventure featuring anthropomorphic animals.",img:"https://placehold.co/300x400/0d0d0d/ffd700?text=Backbone"},
+{id:191,title:"Flynn: Son of Crimson",genre:"Action",platform:"BOTH",price:1999,desc:"A vibrant 2D action platformer with deep combat mechanics.",img:"https://placehold.co/300x400/1a0000/ff2d78?text=Flynn+Crimson"},
+{id:192,title:"The Forgotten City",genre:"Adventure",platform:"BOTH",price:2999,desc:"A time-loop mystery in a perfectly preserved Roman city.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Forgotten+City"},
+{id:193,title:"Citizen Sleeper",genre:"RPG",platform:"BOTH",price:2499,desc:"A tabletop-inspired RPG about surviving on a derelict space station.",img:"https://placehold.co/300x400/001a1a/b820ff?text=Citizen+Sleeper"},
+{id:194,title:"Rollerdrome",genre:"Action",platform:"BOTH",price:2999,desc:"Stylish third-person skater-shooter in a brutal future sport.",img:"https://placehold.co/300x400/001a1a/ff2d78?text=Rollerdrome"},
+{id:195,title:"Signalis",genre:"Horror",platform:"BOTH",price:1999,desc:"A sci-fi survival horror about androids, love, and memory.",img:"https://placehold.co/300x400/0d0000/ff2d78?text=Signalis"},
+{id:196,title:"Tails of Iron",genre:"Action",platform:"BOTH",price:2499,desc:"A dark medieval RPG where a rat prince must reclaim his kingdom.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Tails+of+Iron"},
+{id:197,title:"Eldest Souls",genre:"Action",platform:"BOTH",price:1999,desc:"A punishing pixel-art boss-rush souls-like game.",img:"https://placehold.co/300x400/0d0020/b820ff?text=Eldest+Souls"},
+{id:198,title:"Eldest Souls: Deluxe",genre:"Action",platform:"BOTH",price:2499,desc:"Complete edition with original soundtrack and artbook.",img:"https://placehold.co/300x400/0d0020/ffd700?text=Eldest+DX"},
+{id:199,title:"Pacific Drive",genre:"Adventure",platform:"PS",price:5999,desc:"Survive a supernatural Olympic Exclusion Zone in your station wagon.",img:"https://placehold.co/300x400/001a1a/00c8ff?text=Pacific+Drive"},
+{id:200,title:"Still Wakes the Deep",genre:"Horror",platform:"BOTH",price:4999,desc:"Survive a North Sea oil rig transformed by a horrific storm.",img:"https://placehold.co/300x400/001a1a/b820ff?text=Still+Wakes"},
+{id:201,title:"Helldivers 2",genre:"Shooter",platform:"PS",price:6499,desc:"Cooperative third-person shooter spreading Managed Democracy across the galaxy.",img:"https://placehold.co/300x400/0d0500/ffd700?text=Helldivers+2"},
+{id:202,title:"Avatar: Frontiers of Pandora",genre:"Adventure",platform:"BOTH",price:7499,desc:"Explore the stunning alien world of Pandora in first-person.",img:"https://placehold.co/300x400/001a0d/00ff88?text=Avatar+FoP"},
+{id:203,title:"Prince of Persia: TSOTP",genre:"Action",platform:"BOTH",price:4999,desc:"The classic time-rewind mechanic remade for modern platforms.",img:"https://placehold.co/300x400/0d0500/ffd700?text=PoP+TSOTP"},
+{id:204,title:"Exoprimal",genre:"Action",platform:"BOTH",price:5499,desc:"Team-based exosuit dinosaur combat in an online action game.",img:"https://placehold.co/300x400/001a00/ff2d78?text=Exoprimal"},
+{id:205,title:"Wild Hearts",genre:"Action",platform:"BOTH",price:6499,desc:"Hunt colossal Kemono beasts in a fantasy Japan.",img:"https://placehold.co/300x400/001a0d/ffd700?text=Wild+Hearts"},
+];
+
+// ──────────────────────────────────────────────────
+// CONTROLLERS DATA
+// ──────────────────────────────────────────────────
+const CONTROLLERS = [
+  // PlayStation
+  {id:'c1',name:"DualSense Midnight Black",platform:"PS",price:13999,desc:"PS5 wireless controller with haptic feedback and adaptive triggers in Midnight Black.",emoji:"🎮",color:"#333"},
+  {id:'c2',name:"DualSense White (Standard)",platform:"PS",price:12999,desc:"The standard PS5 controller with revolutionary haptic feedback.",emoji:"🎮",color:"#f0f0f0"},
+  {id:'c3',name:"DualSense Cosmic Red",platform:"PS",price:13999,desc:"Striking two-tone design in Cosmic Red with full PS5 features.",emoji:"🎮",color:"#cc0000"},
+  {id:'c4',name:"DualSense Nova Pink",platform:"PS",price:13999,desc:"Stylish Nova Pink DualSense with stunning feminine design.",emoji:"🎮",color:"#ff69b4"},
+  {id:'c5',name:"DualSense Galactic Purple",platform:"PS",price:13999,desc:"Eye-catching Galactic Purple for the bold gamer.",emoji:"🎮",color:"#7b2d8b"},
+  {id:'c6',name:"DualSense Cobalt Blue",platform:"PS",price:13999,desc:"Deep ocean Cobalt Blue DualSense controller.",emoji:"🎮",color:"#0047ab"},
+  {id:'c7',name:"DualSense Edge (Pro)",platform:"PS",price:24999,desc:"PS5's premium pro controller with swappable components and custom profiles.",emoji:"🎮",color:"#222"},
+  {id:'c8',name:"DualShock 4 Black (PS4)",platform:"PS",price:7999,desc:"Classic PS4 DualShock 4 in Jet Black, fully compatible with PS5 PS4 games.",emoji:"🕹️",color:"#111"},
+  {id:'c9',name:"DualShock 4 White (PS4)",platform:"PS",price:7999,desc:"PS4 controller in clean Glacier White.",emoji:"🕹️",color:"#f5f5f5"},
+  {id:'c10',name:"DualShock 4 Red (PS4)",platform:"PS",price:7999,desc:"Bold Magma Red PS4 controller.",emoji:"🕹️",color:"#cc0000"},
+  {id:'c11',name:"DualShock 4 Blue (PS4)",platform:"PS",price:7999,desc:"Wave Blue PS4 controller — a fan favorite.",emoji:"🕹️",color:"#0055aa"},
+  {id:'c12',name:"DualShock 4 Gold (PS4)",platform:"PS",price:8499,desc:"Limited edition Gold DualShock 4 with matching audio jack.",emoji:"🕹️",color:"#b8860b"},
+  {id:'c13',name:"PS5 Media Remote",platform:"PS",price:3999,desc:"Control your PS5 entertainment with this slim dedicated remote.",emoji:"📱",color:"#222"},
+  {id:'c14',name:"PlayStation VR2 Sense Controller",platform:"PS",price:18999,desc:"Next-gen VR controller with haptic feedback for PS VR2.",emoji:"🥽",color:"#fff"},
+  // Xbox
+  {id:'c15',name:"Xbox Series X Controller Black",platform:"XBOX",price:11999,desc:"The redesigned Xbox Series X controller with textured grip and Share button.",emoji:"🎮",color:"#1a1a1a"},
+  {id:'c16',name:"Xbox Controller Robot White",platform:"XBOX",price:11999,desc:"Classic Xbox Series X/S controller in clean Robot White.",emoji:"🎮",color:"#f0f0f0"},
+  {id:'c17',name:"Xbox Controller Shock Blue",platform:"XBOX",price:11999,desc:"Shock Blue Xbox Series X|S controller with electric energy.",emoji:"🎮",color:"#0078d4"},
+  {id:'c18',name:"Xbox Controller Pulse Red",platform:"XBOX",price:11999,desc:"Intense Pulse Red Xbox controller with performance grip.",emoji:"🎮",color:"#c0392b"},
+  {id:'c19',name:"Xbox Controller Carbon Black",platform:"XBOX",price:12499,desc:"Premium Carbon Black special edition with hybrid D-Pad.",emoji:"🎮",color:"#2c2c2c"},
+  {id:'c20',name:"Xbox Controller Velocity Green",platform:"XBOX",price:11999,desc:"The iconic Velocity Green Xbox Series X controller.",emoji:"🎮",color:"#107c10"},
+  {id:'c21',name:"Xbox Controller Mineral Camo",platform:"XBOX",price:12999,desc:"Stunning Mineral Camo limited edition with multi-color design.",emoji:"🎮",color:"#4a7a5a"},
+  {id:'c22',name:"Xbox Elite Controller Series 2",platform:"XBOX",price:24999,desc:"The ultimate pro controller with hair trigger locks and 40hr battery.",emoji:"🎮",color:"#111"},
+  {id:'c23',name:"Xbox Elite Controller Core Blue",platform:"XBOX",price:19999,desc:"Elite Series 2 Core in blue — customizable without paddles.",emoji:"🎮",color:"#0055aa"},
+  {id:'c24',name:"Xbox Design Lab Custom",platform:"XBOX",price:14999,desc:"Custom-designed Xbox controller made to your unique color preferences.",emoji:"🎮",color:"#7b2d8b"},
+  {id:'c25',name:"Xbox Adaptive Controller",platform:"XBOX",price:10999,desc:"Designed for gamers with limited mobility — fully customizable.",emoji:"🎮",color:"#fff"},
+  {id:'c26',name:"Xbox One Controller Black",platform:"XBOX",price:7499,desc:"Classic Xbox One controller compatible with PC and Xbox.",emoji:"🕹️",color:"#111"},
+  {id:'c27',name:"Xbox One Controller White",platform:"XBOX",price:7499,desc:"White Xbox One controller in classic clean design.",emoji:"🕹️",color:"#f5f5f5"},
+  {id:'c28',name:"Xbox One Controller Blue",platform:"XBOX",price:7499,desc:"Blue Xbox One controller for the true fan.",emoji:"🕹️",color:"#0055aa"},
+  {id:'c29',name:"Xbox Series S Bundle",platform:"XBOX",price:8499,desc:"Xbox Series S controller in White bundled with a rechargeable battery pack.",emoji:"🕹️",color:"#e0e0e0"},
+  {id:'c30',name:"Xbox Stereo Headset",platform:"XBOX",price:6999,desc:"Official Xbox Stereo Headset for crisp game audio and chat.",emoji:"🎧",color:"#222"},
+];
+
+// ──────────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────────
+let cart = [];
+let activeGenre = 'all';
+let activePlatforms = [];
+let searchQuery = '';
+let sortMode = 'default';
+let paymentMethod = 'cod';
+let modalPaymentMethod = 'cod';
+
+// ──────────────────────────────────────────────────
+// RENDER GAMES
+// ──────────────────────────────────────────────────
+function getFilteredGames() {
+  let games = [...GAMES];
+  if (activeGenre !== 'all') games = games.filter(g => g.genre === activeGenre);
+  if (activePlatforms.length > 0) {
+    games = games.filter(g => {
+      if (g.platform === 'BOTH') return true;
+      return activePlatforms.includes(g.platform);
+    });
+  }
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    games = games.filter(g => g.title.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q));
+  }
+  if (sortMode === 'price-asc') games.sort((a,b) => a.price - b.price);
+  else if (sortMode === 'price-desc') games.sort((a,b) => b.price - a.price);
+  else if (sortMode === 'name') games.sort((a,b) => a.title.localeCompare(b.title));
+  return games;
+}
+
+function renderGames() {
+  const grid = document.getElementById('gamesGrid');
+  const games = getFilteredGames();
+  document.getElementById('gameCount').textContent = games.length;
+
+  if (games.length === 0) {
+    grid.innerHTML = `<div class="no-results"><div class="no-icon">🔍</div><p>NO GAMES FOUND</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = games.map((g, i) => {
+    const inCart = cart.some(c => c.id === g.id);
+    const platClass = g.platform === 'PS' ? 'platform-ps' : g.platform === 'XBOX' ? 'platform-xbox' : 'platform-both';
+    const platLabel = g.platform === 'BOTH' ? 'PS & XBOX' : g.platform;
+    return `
+    <div class="game-card" style="animation-delay:${i*0.03}s">
+      <div class="card-img">
+        <img src="${g.img}" alt="${g.title}" loading="lazy">
+        <div class="card-overlay"></div>
+        <span class="card-platform ${platClass}">${platLabel}</span>
+        <span class="card-genre">${g.genre}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${g.title}</div>
+        <div class="card-desc">${g.desc}</div>
+        <div class="card-footer">
+          <div class="card-price"><small>PKR</small>${g.price.toLocaleString()}</div>
+          <button class="btn-add ${inCart?'added':''}" onclick="addToCart(${g.id},this)">
+            ${inCart ? '✓ ADDED' : '+ ADD'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderControllers() {
+  const grid = document.getElementById('controllersGrid');
+  grid.innerHTML = CONTROLLERS.map(c => {
+    const inCart = cart.some(x => x.id === c.id);
+    const platClass = c.platform === 'PS' ? 'platform-ps' : 'platform-xbox';
+    return `
+    <div class="controller-card">
+      <div class="card-img controller-img" style="font-size:72px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0d0d1a,#1a1a30)">
+        <span>${c.emoji}</span>
+      </div>
+      <div class="controller-body">
+        <span class="card-platform ${platClass}" style="margin-bottom:8px;display:inline-block">${c.platform}</span>
+        <div class="controller-name">${c.name}</div>
+        <div class="controller-desc">${c.desc}</div>
+        <div class="controller-footer">
+          <div class="controller-price">PKR ${c.price.toLocaleString()}</div>
+          <button class="btn-add ${inCart?'added':''}" onclick="addControllerToCart('${c.id}',this)">
+            ${inCart?'✓ ADDED':'+ ADD'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ──────────────────────────────────────────────────
+// CART
+// ──────────────────────────────────────────────────
+function addToCart(id, btn) {
+  const game = GAMES.find(g => g.id === id);
+  if (!game) return;
+  if (cart.some(c => c.id === id)) {
+    removeFromCart(id); return;
+  }
+  cart.push({...game, type:'game'});
+  btn.textContent = '✓ ADDED'; btn.classList.add('added');
+  updateCartUI();
+  showToast(`${game.title} added to cart!`);
+}
+
+function addControllerToCart(id, btn) {
+  const ctrl = CONTROLLERS.find(c => c.id === id);
+  if (!ctrl) return;
+  if (cart.some(c => c.id === id)) {
+    removeFromCart(id); return;
+  }
+  cart.push({...ctrl, type:'controller'});
+  btn.textContent = '✓ ADDED'; btn.classList.add('added');
+  updateCartUI();
+  showToast(`${ctrl.name} added to cart!`);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  updateCartUI();
+  renderGames();
+  renderControllers();
+}
+
+function updateCartUI() {
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = cart.length;
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  document.getElementById('cartTotal').textContent = total.toLocaleString();
+
+  const itemsEl = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = `<div class="cart-empty"><div class="empty-icon">🎮</div><p>YOUR CART IS EMPTY</p></div>`;
+    footer.style.display = 'none';
+  } else {
+    footer.style.display = 'block';
+    itemsEl.innerHTML = cart.map(item => `
+      <div class="cart-item">
+        <img class="cart-item-img" src="${item.img || 'https://placehold.co/56x56/0d0d1a/b820ff?text=🎮'}" alt="${item.name||item.title}">
+        <div class="cart-item-info">
+          <div class="cart-item-title">${item.title||item.name}</div>
+          <div class="cart-item-platform">${item.platform||''} ${item.genre||item.type||''}</div>
+          <div class="cart-item-price">PKR ${item.price.toLocaleString()}</div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">✕</button>
+      </div>`).join('');
+  }
+}
+
+function toggleCart() {
+  document.getElementById('cartSidebar').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
+function selectPayment(method, el) {
+  paymentMethod = method;
+  document.querySelectorAll('.payment-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ──────────────────────────────────────────────────
+// WHATSAPP CHECKOUT
+// ──────────────────────────────────────────────────
+function whatsappCheckout() {
+  if (cart.length === 0) { showToast('Cart is empty!'); return; }
+  const total = cart.reduce((s,i) => s+i.price, 0);
+  let msg = `🎮 *GAMEFORGE ORDER*\n\n`;
+  msg += `📦 *Items:*\n`;
+  cart.forEach(i => msg += `• ${i.title||i.name} — PKR ${i.price.toLocaleString()}\n`);
+  msg += `\n💰 *TOTAL: PKR ${total.toLocaleString()}*\n`;
+  msg += `💳 *Payment: ${paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}*\n\n`;
+  msg += `Please confirm my order! 🙏`;
+  window.open(`https://wa.me/923343996536?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ──────────────────────────────────────────────────
+// ORDER MODAL
+// ──────────────────────────────────────────────────
+function openOrderModal() {
+  if (cart.length === 0) { showToast('Cart is empty!'); return; }
+  document.getElementById('orderModal').classList.add('open');
+}
+function closeOrderModal() {
+  document.getElementById('orderModal').classList.remove('open');
+}
+
+function selectModalPayment(method, el) {
+  modalPaymentMethod = method;
+  document.querySelectorAll('.payment-card').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function submitOrder() {
+  const name = document.getElementById('orderName').value.trim();
+  const phone = document.getElementById('orderPhone').value.trim();
+  const email = document.getElementById('orderEmail').value.trim();
+  const address = document.getElementById('orderAddress').value.trim();
+  const notes = document.getElementById('orderNotes').value.trim();
+
+  if (!name || !phone || !address) {
+    showToast('⚠️ Please fill all required fields!'); return;
+  }
+
+  const total = cart.reduce((s,i) => s+i.price, 0);
+  const payLabels = {cod:'Cash on Delivery',easypaisa:'Easypaisa',jazzcash:'JazzCash',bank:'Bank Transfer'};
+
+  // Build email body
+  const subject = `🎮 New GameForge Order from ${name}`;
+  let body = `NEW ORDER FROM GAMEFORGE\n\n`;
+  body += `Customer: ${name}\nPhone: ${phone}\nEmail: ${email||'Not provided'}\n`;
+  body += `Address: ${address}\nPayment: ${payLabels[modalPaymentMethod]}\n`;
+  if (notes) body += `Notes: ${notes}\n`;
+  body += `\n--- ITEMS ---\n`;
+  cart.forEach(i => body += `• ${i.title||i.name} (${i.platform||''}) - PKR ${i.price.toLocaleString()}\n`);
+  body += `\nTOTAL: PKR ${total.toLocaleString()}`;
+
+  // Open email client with order details to saifkhan1906@gmail.com
+  const mailLink = `mailto:saifkhan1906@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(mailLink, '_blank');
+
+  // Also open WhatsApp with order summary
+  let waMsg = `🎮 *GAMEFORGE ORDER PLACED!*\n\n👤 *${name}*\n📞 ${phone}\n📍 ${address}\n💳 ${payLabels[modalPaymentMethod]}\n\n`;
+  cart.forEach(i => waMsg += `• ${i.title||i.name} — PKR ${i.price.toLocaleString()}\n`);
+  waMsg += `\n💰 *TOTAL: PKR ${total.toLocaleString()}*`;
+  setTimeout(() => window.open(`https://wa.me/923343996536?text=${encodeURIComponent(waMsg)}`, '_blank'), 1000);
+
+  closeOrderModal();
+  cart = [];
+  updateCartUI();
+  renderGames();
+  renderControllers();
+  toggleCart();
+  showToast('🎉 Order placed! Check your email & WhatsApp!');
+}
+
+// ──────────────────────────────────────────────────
+// FILTERS
+// ──────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeGenre = btn.dataset.genre;
+    renderGames();
+  });
+});
+
+document.querySelectorAll('.platform-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const plat = btn.dataset.plat;
+    btn.classList.toggle('active');
+    if (btn.classList.contains('active')) {
+      activePlatforms.push(plat);
+    } else {
+      activePlatforms = activePlatforms.filter(p => p !== plat);
+    }
+    renderGames();
+  });
+});
+
+document.getElementById('sortSelect').addEventListener('change', e => {
+  sortMode = e.target.value;
+  renderGames();
+});
+
+// Search
+function handleSearch(q) {
+  searchQuery = q;
+  renderGames();
+}
+document.getElementById('searchInput').addEventListener('input', e => handleSearch(e.target.value));
+document.getElementById('mobileSearch').addEventListener('input', e => {
+  handleSearch(e.target.value);
+  document.getElementById('searchInput').value = e.target.value;
+});
+
+// ──────────────────────────────────────────────────
+// TOAST
+// ──────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ──────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────
+renderGames();
+renderControllers();
+</script>
+</body>
+</html>
